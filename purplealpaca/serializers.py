@@ -22,3 +22,8 @@ class UserAuthSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'password')
 
+class UserDelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'password')

@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from purplealpaca.models import Account
 from purplealpaca.permissions import IsOwner
-from purplealpaca.serializers import AccountSerializer, UserSerializer
+from purplealpaca.serializers import AccountSerializer, UserSerializer, UserDelSerializer
 from rest_framework.decorators import api_view
 
 
@@ -22,9 +22,14 @@ class AccountViewSet(viewsets.ModelViewSet):
         return self.request.user.accounts.all()
 
 
-# class UserViewSet(viewsets.ReadOnlyModelViewSet):
-#    queryset = User.objects.all()
-#    serializer_class = UserSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    model = User
+    serializer_class = UserDelSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()    
+    def get_queryset(self):
+        return User.objects.filter(username=self.request.user)    
+
 
 @api_view(['POST'])
 @csrf_exempt
